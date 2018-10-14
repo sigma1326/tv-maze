@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@+id/start"
+        motion:duration="1000">
+        <OnSwipe
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@+id/img_card"
+            motion:touchAnchorSide="bottom" />
+
+        <ConstraintSet android:id="@+id/start">
+            <Constraint
+                android:id="@+id/img_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="1.0"
+                android:scaleX="1.1"
+                android:scaleY="1.1"
+                motion:layout_constraintBottom_toBottomOf="parent" />
+            <Constraint
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:alpha="1"
+                android:rotation="0.0"
+                android:translationY="8dp"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toTopOf="@+id/img_card" />
+            <Constraint
+                android:id="@+id/sublabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                motion:layout_constraintBottom_toBottomOf="@+id/img_card"
+                motion:layout_constraintStart_toEndOf="@+id/img_card" />
+
+        </ConstraintSet>
+
+        <ConstraintSet android:id="@+id/end">
+            <Constraint
+                android:id="@id/img_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:translationX="0dp"
+                android:translationY="100dp"
+                motion:layout_constraintBottom_toBottomOf="parent" />
+            <Constraint
+                android:id="@id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:rotation="360.0"
+                motion:layout_constraintBottom_toBottomOf="@+id/img_card"
+                motion:layout_constraintStart_toStartOf="parent" />
+            <Constraint
+                android:id="@id/sublabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                motion:layout_constraintBottom_toBottomOf="@+id/img_card"
+                motion:layout_constraintEnd_toEndOf="@+id/img_card"
+                motion:layout_constraintStart_toStartOf="@+id/img_card" />
+
+        </ConstraintSet>
+
+    </Transition>
+
+</MotionScene>
