@@ -46,7 +46,7 @@
                 android:id="@id/img_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="0"
+                android:alpha="0.2"
                 android:translationX="0dp"
                 android:translationY="100dp"
                 motion:layout_constraintBottom_toBottomOf="parent" />
