@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="false"
             android:minHeight="60dp"
-            app:layoutDescription="@xml/scene_10_header"
+            app:layoutDescription="@xml/scene_show"
             app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed">
 
             <androidx.appcompat.widget.AppCompatImageView
