@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,6 +19,7 @@ import com.example.tvmaze.network.NetworkResponse
 import com.example.tvmaze.utils.CustomUtils
 import kotlinx.android.synthetic.main.home_fragment.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class Home : Fragment() {
@@ -31,12 +31,11 @@ class Home : Fragment() {
 
     private lateinit var adapter: GridRecyclerAdapter
 
+    private lateinit var vm: HomeViewModel
+
     companion object {
         fun newInstance() = Home()
     }
-
-    private lateinit var viewModel: HomeViewModel
-
 
     interface MyClickListener {
         fun onClick(v: View, id: Int)
@@ -59,7 +58,8 @@ class Home : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        vm = getViewModel()
+//        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         val gridLayoutManager = GridLayoutManager(activity, 2)
         rvCards.layoutManager = gridLayoutManager
@@ -95,7 +95,7 @@ class Home : Fragment() {
 
     private fun loadShows(p: Int) {
         network.getShowsByPage(p, object : NetworkResponse {
-            override fun onSuccess(response: String, responseObjects: List<Show>) {
+            override fun onSuccess(response: String, responseObjects: MutableList<Show>) {
                 CustomUtils.makeToast(activity, "بروزرسانی شد").show()
                 CustomUtils.getHandler().post {
                     shows.addAll(responseObjects)

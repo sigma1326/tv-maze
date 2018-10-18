@@ -56,7 +56,7 @@ class ShowFragment : Fragment() {
     private fun loadShow(id: Int) {
         network.getShow(id.toString(), object : NetworkResponse {
             @SuppressLint("SetTextI18n")
-            override fun onSuccess(response: String, responseObjects: List<Show>) {
+            override fun onSuccess(response: String, responseObjects: MutableList<Show>) {
                 CustomUtils.makeToast(activity, "بروزرسانی شد").show()
                 CustomUtils.getHandler().post {
                     CustomUtils.initShowView(img_card, responseObjects[0], false)

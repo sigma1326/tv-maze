@@ -1,5 +1,6 @@
 package com.example.tvmaze.network
 
+import com.example.tvmaze.database.DataBaseRepositoryImpl
 import com.example.tvmaze.management.AppManager
 import com.example.tvmaze.model.SearchResult
 import com.example.tvmaze.model.Show
@@ -12,13 +13,13 @@ import retrofit2.http.Query
 
 
 interface NetworkResponse {
-    fun onSuccess(response: String, responseObjects: List<Show>)
+    fun onSuccess(response: String, responseObjects: MutableList<Show>)
     fun onError(errorMessage: String)
 }
 
 
 interface NetworkResponseSearch {
-    fun onSuccess(response: String, responseObjects: List<SearchResult>)
+    fun onSuccess(response: String, responseObjects: MutableList<SearchResult>)
     fun onError(errorMessage: String)
 }
 
@@ -27,10 +28,10 @@ interface ShowsRepository {
     fun getShow(@Path("id") id: String): Flowable<Show>
 
     @GET("shows")
-    fun getShowsByPage(@Query("page") pageNumber: Int): Flowable<List<Show>>
+    fun getShowsByPage(@Query("page") pageNumber: Int): Flowable<MutableList<Show>>
 
     @GET("search/shows")
-    fun searchShows(@Query("q") name: String): Flowable<List<SearchResult>>
+    fun searchShows(@Query("q") name: String): Flowable<MutableList<SearchResult>>
 }
 
 interface NetworkRepository {
@@ -41,7 +42,7 @@ interface NetworkRepository {
     fun searchShows(name: String, networkResponse: NetworkResponseSearch)
 }
 
-class NetworkRepositoryImpl : NetworkRepository {
+class NetworkRepositoryImpl(val db: DataBaseRepositoryImpl) : NetworkRepository {
     override fun searchShows(name: String, networkResponse: NetworkResponseSearch) {
         try {
             runAsync {
@@ -56,6 +57,7 @@ class NetworkRepositoryImpl : NetworkRepository {
                                             cleanList.add(it)
                                         }
                                     }
+
                                     networkResponse.onSuccess("success", cleanList)
                                 }
                                 , { error ->
@@ -77,7 +79,7 @@ class NetworkRepositoryImpl : NetworkRepository {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 { result ->
-                                    networkResponse.onSuccess("success", listOf(result))
+                                    networkResponse.onSuccess("success", mutableListOf(result))
                                 }
                                 , { error ->
                             error.printStackTrace()

@@ -97,7 +97,7 @@ class SearchFragment : Fragment() {
         }
 
         network.searchShows(query, object : NetworkResponseSearch {
-            override fun onSuccess(response: String, responseObjects: List<SearchResult>) {
+            override fun onSuccess(response: String, responseObjects: MutableList<SearchResult>) {
                 CustomUtils.getHandler().post {
                     responseObjects.forEach {
                         shows.add(it.show!!)

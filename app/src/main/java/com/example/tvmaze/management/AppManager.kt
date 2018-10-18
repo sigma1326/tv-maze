@@ -2,9 +2,17 @@ package com.example.tvmaze.management
 
 import android.app.Application
 import android.util.Log
+import androidx.room.Room
+import com.example.tvmaze.database.DataBase
+import com.example.tvmaze.database.DataBaseRepositoryImpl
 import com.example.tvmaze.network.NetworkRepositoryImpl
 import com.example.tvmaze.network.ShowsRepository
+import com.example.tvmaze.ui.home.HomeViewModel
+import com.example.tvmaze.ui.search.SearchViewModel
+import com.example.tvmaze.ui.show.ShowViewModel
 import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -38,6 +46,8 @@ class AppManager : Application() {
     companion object {
         private const val host = "http://api.tvmaze.com/"
         const val TAG = "debug13"
+        private const val DB_NAME = "demo-db"
+
 
         private val retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -49,7 +59,16 @@ class AppManager : Application() {
 
         val appModule = module {
             //Network
-            single { NetworkRepositoryImpl() }
+            single { NetworkRepositoryImpl(get()) }
+
+            //DataBase
+            single { Room.databaseBuilder(androidApplication(), DataBase::class.java, DB_NAME).build() }
+            single { DataBaseRepositoryImpl(get()) }
+
+            //view model
+            viewModel("home") { HomeViewModel(get(), get()) }
+            viewModel("search") { SearchViewModel(get(), get()) }
+            viewModel("show") { ShowViewModel(get(), get()) }
         }
     }
 }
